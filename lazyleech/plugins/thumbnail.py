@@ -1,10 +1,10 @@
 import os
 import tempfile
 from pyrogram import Client, filters
-from .. import ALL_CHATS, help_dict
+from .. import ALL_CHATS, help_dict, BOT_UNAME
 from ..utils.misc import convert_to_jpg, get_file_mimetype, watermark_photo
 
-@Client.on_message(filters.command(['thumbnail', 'savethumbnail', 'setthumbnail']) & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['savethumb',f'savethumb@{BOT_UNAME}']) & filters.chat(ALL_CHATS))
 async def savethumbnail(client, message):
     reply = message.reply_to_message
     document = message.document
@@ -41,7 +41,7 @@ async def savethumbnail(client, message):
     else:
         await message.reply_text('Cannot find thumbnail')
 
-@Client.on_message(filters.command(['clearthumbnail', 'rmthumbnail', 'delthumbnail', 'removethumbnail', 'deletethumbnail']) & filters.chat(ALL_CHATS))
+@Client.on_message(filters.command(['clearthumb', f'clearthumb@{BOT_UNAME}']) & filters.chat(ALL_CHATS))
 async def rmthumbnail(client, message):
     for path in ('thumbnail', 'watermarked_thumbnail'):
         path = os.path.join(str(message.from_user.id), f'{path}.jpg')
@@ -50,12 +50,6 @@ async def rmthumbnail(client, message):
     await message.reply_text('Thumbnail cleared')
 
 help_dict['thumbnail'] = ('Thumbnail',
-'''/thumbnail <i>&lt;as reply to image or as a caption&gt;</i>
-/setthumbnail <i>&lt;as reply to image or as a caption&gt;</i>
-/savethumbnail <i>&lt;as reply to image or as a caption&gt;</i>
+'''/savethumb <i>&lt;as reply to image or as a caption&gt;</i>
 
-/clearthumbnail
-/rmthumbnail
-/removethumbnail
-/delthumbnail
-/deletethumbnail''')
+/clearthumb''')
