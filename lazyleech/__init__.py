@@ -73,3 +73,10 @@ def memory_file(name=None, contents=None, *, bytes=True):
         file.write(contents)
         file.seek(0)
     return file
+
+BOT_UNAME = ""
+
+def get_info(app):
+    global BOT_UNAME
+    getme = app.get_me()
+    BOT_UNAME = getme.username
